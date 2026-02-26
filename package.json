@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/codeby-vikrant/MernStack-Thinkboard/issues"
   },
-  "homepage": "https://github.com/codeby-vikrant/MernStack-Thinkboard#readme"
+  "homepage": "https://github.com/codeby-vikrant/MernStack-Thinkboard#readme",
+  "dependencies": {
+    "uuid": "^13.0.0"
+  }
 }
