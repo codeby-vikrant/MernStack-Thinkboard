@@ -16,7 +16,8 @@ const NoteDetailPage = () => {
   useEffect(() => {
     const fetchNote = async () => {
       try {
-        const res = await api.get(`/notes/${id}`);
+        const userId = localStorage.getItem("thinkboard_user");
+        const res = await api.get(`/notes/${id}?userId=${userId}`);
         setNote(res.data);
       } catch (error) {
         console.log("Error in fetching notes", error);
@@ -30,7 +31,10 @@ const NoteDetailPage = () => {
 
   const confirmDelete = async () => {
     try {
-      await api.delete(`/notes/${id}`);
+      const userId = localStorage.getItem("thinkboard_user");
+      await api.delete(`/notes/${id}`, {
+        data: { userId },
+      });
       toast.success("Note Deleted Successfully");
       navigate("/");
     } catch (error) {
@@ -49,7 +53,8 @@ const NoteDetailPage = () => {
     setSaving(true);
 
     try {
-      await api.put(`/notes/${id}`, note);
+      const userId = localStorage.getItem("thinkboard_user");
+      await api.put(`/notes/${id}`, { ...note, userId });
       toast.success("Note Updated Successfully");
       navigate("/");
     } catch (error) {

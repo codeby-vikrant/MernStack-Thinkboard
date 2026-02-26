@@ -21,7 +21,8 @@ const CreatePage = () => {
 
     setLoading(true);
     try {
-      await api.post("/notes", { title, content });
+      const userId = localStorage.getItem("thinkboard_user");
+      await api.post("/notes", { title, content, userId });
       toast.success("Note Created Successfully");
       navigate("/");
     } catch (error) {

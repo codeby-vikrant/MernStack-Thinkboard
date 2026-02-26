@@ -14,7 +14,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
-        const res = await api.get("/notes");
+        const userId = localStorage.getItem("thinkboard_user");
+        const res = await api.get(`/notes?userId=${userId}`);
         console.log(res.data);
         setNotes(res.data);
         setRateLimited(false);

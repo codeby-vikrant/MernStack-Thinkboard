@@ -1,8 +1,15 @@
 import Note from "../models/Note.js";
 
-export async function getAllNotes(_, res) {
+export async function getAllNotes(req, res) {
   try {
-    const notes = await Note.find().sort({ createdAt: -1 });
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    const notes = await Note.find({ userId }).sort({ createdAt: -1 });
+
     res.status(200).json(notes);
   } catch (error) {
     console.error("Error in getAllNotes controller", error);
@@ -23,9 +30,15 @@ export async function getNoteById(req, res) {
 
 export async function createNote(req, res) {
   try {
-    const { title, content } = req.body;
-    const note = new Note({ title, content });
+    const { title, content, userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: "userId is required" });
+    }
+
+    const note = new Note({ title, content, userId });
     const savedNote = await note.save();
+
     res.status(201).json(savedNote);
   } catch (error) {
     console.error("Error in createNote controller", error);
@@ -44,7 +57,7 @@ export async function updateNote(req, res) {
       },
       {
         new: true,
-      }
+      },
     );
     if (!updatedNote)
       return res.status(404).json({ message: "Note not found" });
